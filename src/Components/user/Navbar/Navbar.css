@@ -1,0 +1,7 @@
+.navbar {
+  position: fixed; /* Giữ navbar đứng yên */
+  top: 0; /* Đặt navbar ở trên cùng */
+  left: 0; /* Đặt navbar ở bên trái */
+  right: 0; /* Đặt navbar ở bên phải */
+  z-index: 10; /* Đảm bảo navbar nằm trên các phần tử khác */
+} 
