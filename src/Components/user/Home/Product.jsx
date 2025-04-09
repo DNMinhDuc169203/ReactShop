@@ -18,7 +18,7 @@ const Product = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:8088/api/v1/categories',{
+        const response = await axios.get('https://springbootuploads.onrender.com/api/v1/categories',{
           params: {
             page: 1,
             limit: 10
