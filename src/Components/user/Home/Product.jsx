@@ -37,7 +37,7 @@ const Product = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8088/api/v1/products', {
+        const response = await axios.get('https://springbootuploads.onrender.com/api/v1/products', {
           params: {
             page: currentPage,
             limit: itemsPerPage,
@@ -148,7 +148,7 @@ const Product = () => {
                   >
                     <img
                       src={product.thumbnail ? 
-                        `http://localhost:8088/api/v1/products/images/${product.thumbnail}` : 
+                        `https://springbootuploads.onrender.com/api/v1/products/images/${product.thumbnail}` : 
                         'https://via.placeholder.com/400x300?text=Không+có+ảnh'
                       }
                       alt={product.name}
