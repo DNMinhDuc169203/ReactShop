@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import authService from '../../../Services/Auth/auth.jsx';
 import { useAuth } from '../../../Context/AuthContext';
+import { useCart } from '../../../Context/CartContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  const { addToCart } = useCart();
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
@@ -13,6 +16,30 @@ const Login = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Lấy trang redirect sau khi đăng nhập (nếu có)
+  const from = location.state?.from || localStorage.getItem('cart_redirect_path') || '/';
+
+  // Xử lý sản phẩm đang chờ thêm vào giỏ hàng (nếu có)
+  useEffect(() => {
+    const handlePendingProduct = () => {
+      const pendingProductStr = localStorage.getItem('pending_product');
+      if (pendingProductStr) {
+        try {
+          const { product, quantity } = JSON.parse(pendingProductStr);
+          if (product && quantity) {
+            // Sẽ thêm vào giỏ hàng sau khi đăng nhập
+            localStorage.removeItem('pending_product');
+          }
+        } catch (error) {
+          console.error('Error parsing pending product:', error);
+          localStorage.removeItem('pending_product');
+        }
+      }
+    };
+
+    handlePendingProduct();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,8 +73,26 @@ const Login = () => {
         const userDetails = await authService.getUserDetails();
         // Cập nhật trạng thái đăng nhập trong context
         login(userDetails);
-        // Chuyển hướng đến trang chính
-        navigate('/');
+
+        // Xử lý sản phẩm đang chờ sau khi đăng nhập
+        const pendingProductStr = localStorage.getItem('pending_product');
+        if (pendingProductStr) {
+          try {
+            const { product, quantity } = JSON.parse(pendingProductStr);
+            if (product && quantity) {
+              addToCart(product, quantity);
+              localStorage.removeItem('pending_product');
+            }
+          } catch (error) {
+            console.error('Error adding pending product to cart:', error);
+          }
+        }
+
+        // Xóa đường dẫn redirect
+        localStorage.removeItem('cart_redirect_path');
+        
+        // Chuyển hướng đến trang trước đó hoặc trang chính
+        navigate(from);
       }
     } catch (error) {
       setError(error.message || 'Đăng nhập thất bại');

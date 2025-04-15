@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaBars, FaTimes, FaDumbbell, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaDumbbell, FaUser, FaSignOutAlt, FaShoppingCart } from "react-icons/fa";
 import "./Navbar.css";
 import { useAuth } from "../../../Context/AuthContext";
+import { useCart } from "../../../Context/CartContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isLoggedIn, userName, logout } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -36,13 +38,24 @@ const Navbar = () => {
           {/* Desktop menu items */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/" className="px-3 py-2 rounded hover:bg-gray-700 transition">Trang chủ</Link>
+            <Link to="/products" className="px-3 py-2 rounded hover:bg-gray-700 transition">Sản phẩm</Link>
             <Link to="/trainers" className="px-3 py-2 rounded hover:bg-gray-700 transition">Dụng cụ</Link>
             <Link to="/pricing" className="px-3 py-2 rounded hover:bg-gray-700 transition">Bảng giá</Link>
             <Link to="/contact" className="px-3 py-2 rounded hover:bg-gray-700 transition">Liên hệ</Link>
           </div>
 
           {/* User actions */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Cart icon */}
+            <Link to="/cart" className="relative px-2">
+              <FaShoppingCart className="text-2xl" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700">Xin chào, {userName}</span>
@@ -68,6 +81,16 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
+            {/* Mobile cart icon */}
+            <Link to="/cart" className="relative px-3 mr-2">
+              <FaShoppingCart className="text-xl" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
             <button onClick={toggleMenu} className="text-black focus:outline-none">
               {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
@@ -80,6 +103,9 @@ const Navbar = () => {
         <div className="md:hidden bg-gray-700 px-2 pt-2 pb-4">
           <Link to="/" className="block px-3 py-2 rounded text-white hover:bg-gray-600 transition mb-1">
             Trang chủ
+          </Link>
+          <Link to="/products" className="block px-3 py-2 rounded text-white hover:bg-gray-600 transition mb-1">
+            Sản phẩm
           </Link>
           <Link to="/classes" className="block px-3 py-2 rounded text-white hover:bg-gray-600 transition mb-1">
             Lớp học

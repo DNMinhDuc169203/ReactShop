@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Pagination from '../Pagination/Pagination';
+import ProductCard from './ProductCard';
+import { useCart } from '../../../Context/CartContext';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -10,6 +13,7 @@ const Product = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const { addToCart } = useCart();
   
   // Mặc định 12 sản phẩm mỗi trang
   const itemsPerPage = 12;
@@ -46,7 +50,16 @@ const Product = () => {
           }
         });
         
-        setProducts(response.data.products);
+        // Đảm bảo mỗi sản phẩm có đường dẫn hình ảnh đầy đủ
+        const productsWithFullImageUrl = response.data.products.map(product => ({
+          ...product,
+          id: product.id,
+          thumbnail: product.thumbnail 
+            ? `http://localhost:8088/api/v1/products/images/${product.thumbnail}` 
+            : 'https://via.placeholder.com/400x300?text=Không+có+ảnh'
+        }));
+        
+        setProducts(productsWithFullImageUrl);
         setTotalPages(response.data.totalPages);
         setLoading(false);
       } catch (error) {
@@ -136,33 +149,13 @@ const Product = () => {
         <div className="flex-1">
           {loading ? (
             <div className="flex justify-center items-center h-64">
-              <p>Đang tải sản phẩm...</p>
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {products.length > 0 ? (
                 products.map((product) => (
-                  <div
-                    key={product.id}
-                    className="border rounded-lg p-4 hover:shadow-lg"
-                  >
-                    <img
-                      src={product.thumbnail ? 
-                        `http://localhost:8088/api/v1/products/images/${product.thumbnail}` : 
-                        'https://via.placeholder.com/400x300?text=Không+có+ảnh'
-                      }
-                      alt={product.name}
-                      className="w-full h-48 object-cover"
-                    />
-
-                    <h3 className="font-semibold text-lg mt-2">{product.name}</h3>
-                    <p className="text-red-600 font-medium">
-                      {new Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      }).format(product.price)}
-                    </p>
-                  </div>
+                  <ProductCard key={product.id} product={product} />
                 ))
               ) : (
                 <div className="col-span-full text-center py-8">

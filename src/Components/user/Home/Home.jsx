@@ -1,6 +1,6 @@
 import React from "react";
 import "./Home.css";
-import Product from "./Product";
+import Product from "../Product/Product";
 import Prominent from "./Prominent";
 import Footer from "../Footer/Footer";
 

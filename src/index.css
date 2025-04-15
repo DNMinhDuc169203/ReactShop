@@ -14,3 +14,53 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Product Carousel Styles */
+.product-carousel .carousel .slide img {
+  max-height: 500px;
+  object-fit: contain;
+}
+
+.product-carousel .carousel .thumb {
+  border: 2px solid transparent;
+  padding: 2px;
+}
+
+.product-carousel .carousel .thumb.selected,
+.product-carousel .carousel .thumb:hover {
+  border-color: #3b82f6;
+}
+
+.product-carousel .carousel .thumbs-wrapper {
+  margin: 20px 0;
+}
+
+.product-carousel .carousel .control-arrow {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 0 20px;
+}
+
+.product-carousel .carousel .control-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Toast Notification Styles */
+.Toastify__toast {
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.Toastify__toast--success {
+  background-color: #10B981;
+}
+
+.Toastify__toast--error {
+  background-color: #EF4444;
+}
+
+.Toastify__progress-bar {
+  height: 3px;
+}
