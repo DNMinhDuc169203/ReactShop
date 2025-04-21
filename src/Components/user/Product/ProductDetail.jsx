@@ -21,7 +21,7 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [comments, setComments] = useState([]);
   // 2 là cao nhất
-  const MAX_QUANTITY = 2;
+  //const MAX_QUANTITY = 2;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -100,14 +100,15 @@ const ProductDetail = () => {
     if (!product) return;
 
     try {
-      addToCart({
+      // Đảm bảo chỉ lấy những thông tin cần thiết cho giỏ hàng
+      const productToAdd = {
         id: product.id,
         name: product.name,
         price: product.price,
         thumbnail: product.thumbnail
-      }, quantity);
+      };
       
-      // toast notify đã chuyển sang hàm addToCart
+      addToCart(productToAdd, quantity);
     } catch (error) {
       console.error('Error adding to cart:', error);
       toast.error('Không thể thêm sản phẩm vào giỏ hàng');

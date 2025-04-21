@@ -60,6 +60,23 @@ export const CartProvider = ({ children }) => {
   const [totalItems, setTotalItems] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  // Khởi tạo giỏ hàng khi component được mount
+  useEffect(() => {
+    const initializeCart = () => {
+      if (isLoggedIn && user?.id) {
+        // Nếu đã đăng nhập, load giỏ hàng của user
+        const userCart = getStoredCart(`cart_${user.id}`);
+        setCartItems(userCart);
+      } else {
+        // Nếu chưa đăng nhập, load giỏ hàng tạm
+        const tempCart = getStoredCart(TEMP_CART_KEY);
+        setCartItems(tempCart);
+      }
+    };
+
+    initializeCart();
+  }, []);
+
   // Xử lý khi đăng nhập/đăng xuất
   useEffect(() => {
     if (isLoggedIn && user?.id) {
@@ -122,6 +139,24 @@ export const CartProvider = ({ children }) => {
     updateCartTotals();
   }, [cartItems, isLoggedIn, user]);
 
+  // Thêm sự kiện lưu giỏ hàng trước khi đóng trang
+  useEffect(() => {
+    const saveCartBeforeUnload = () => {
+      if (isLoggedIn && user?.id) {
+        storeCart(`cart_${user.id}`, cartItems);
+      } else {
+        storeCart(TEMP_CART_KEY, cartItems);
+      }
+    };
+
+    // Lưu giỏ hàng trước khi đóng trang
+    window.addEventListener('beforeunload', saveCartBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', saveCartBeforeUnload);
+    };
+  }, [cartItems, isLoggedIn, user]);
+
   // Hàm nội bộ để thêm sản phẩm vào giỏ hàng
   const addToCartInternal = (product, quantity = 1) => {
     if (!product) return;
@@ -143,7 +178,7 @@ export const CartProvider = ({ children }) => {
         }];
       }
 
-      // Lưu vào localStorage
+      // Lưu ngay vào localStorage
       if (isLoggedIn && user?.id) {
         storeCart(`cart_${user.id}`, updatedItems);
       } else {
@@ -175,6 +210,7 @@ export const CartProvider = ({ children }) => {
     setCartItems(prevItems => {
       const updatedItems = prevItems.filter(item => item.id !== productId);
       
+      // Lưu ngay vào localStorage
       if (isLoggedIn && user?.id) {
         storeCart(`cart_${user.id}`, updatedItems);
       } else {
@@ -193,6 +229,7 @@ export const CartProvider = ({ children }) => {
         item.id === productId ? { ...item, quantity } : item
       );
       
+      // Lưu ngay vào localStorage
       if (isLoggedIn && user?.id) {
         storeCart(`cart_${user.id}`, updatedItems);
       } else {
@@ -206,6 +243,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     setCartItems([]);
     
+    // Xóa giỏ hàng khỏi localStorage
     if (isLoggedIn && user?.id) {
       localStorage.removeItem(`cart_${user.id}`);
     } else {

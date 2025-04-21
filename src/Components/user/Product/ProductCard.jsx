@@ -13,8 +13,16 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault(); // Ngăn chặn chuyển hướng khi click vào nút "Thêm vào giỏ"
-    addToCart(product, 1);
-    // Thông báo đã được chuyển vào hàm addToCart
+    
+    // Đảm bảo product có đầy đủ thông tin cần thiết
+    const productToAdd = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      thumbnail: product.thumbnail
+    };
+    
+    addToCart(productToAdd, 1);
   };
 
   return (

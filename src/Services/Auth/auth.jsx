@@ -60,6 +60,8 @@ const authService = {
       if (response.data && response.data.token) {
         // Lưu token vào local storage
         localStorage.setItem('token', response.data.token);
+        // Lưu roleId để phân biệt tài khoản admin và user
+        localStorage.setItem('role_id', roleId);
       }
       
       return response.data;
@@ -85,7 +87,12 @@ const authService = {
         }
       });
       
-      return response.data;
+      // Thêm thông tin roleId vào dữ liệu người dùng
+      const roleId = localStorage.getItem('role_id') || '1';
+      return {
+        ...response.data,
+        role_id: parseInt(roleId)
+      };
     } catch (error) {
       if (error.response) {
         throw new Error(error.response.data.message || 'Không thể lấy thông tin người dùng');
@@ -124,11 +131,17 @@ const authService = {
   // Đăng xuất
   logout: () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role_id');
   },
 
   // Kiểm tra người dùng đã đăng nhập hay chưa
   isLoggedIn: () => {
     return localStorage.getItem('token') !== null;
+  },
+
+  // Kiểm tra người dùng có phải admin không
+  isAdmin: () => {
+    return localStorage.getItem('role_id') === '2';
   }
 };
 
