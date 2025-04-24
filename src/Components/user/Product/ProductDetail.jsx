@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useCart } from '../../../Context/CartContext';
 import { useAuth } from '../../../Context/AuthContext';
 
-const API_BASE_URL = 'http://localhost:8088/api/v1';
+const API_BASE_URL = 'https://springbootuploads.onrender.com/api/v1';
 
 const ProductDetail = () => {
   const { productId } = useParams();
