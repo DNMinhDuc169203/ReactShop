@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8088/api/v1';
+import { API_BASE_URL } from '../../config/api';
 
 const cartService = {
   // Tạo đơn hàng mới (bao gồm cả thông tin chi tiết đơn hàng)

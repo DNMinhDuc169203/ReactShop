@@ -2,6 +2,9 @@ import React from 'react';
 import { FaTrash, FaMinus, FaPlus } from 'react-icons/fa';
 
 const CartItem = ({ item, updateQuantity, removeFromCart, formatPrice }) => {
+  // Kiểm tra nếu đã đạt số lượng tối đa
+  //const isMaxQuantity = item.quantity >= 2;
+
   return (
     <div className="border-b p-4 flex flex-col md:flex-row items-start md:items-center">
       {/* Hình ảnh sản phẩm */}
@@ -17,6 +20,9 @@ const CartItem = ({ item, updateQuantity, removeFromCart, formatPrice }) => {
       <div className="flex-grow mr-4">
         <h3 className="font-medium text-gray-800">{item.name}</h3>
         <p className="text-red-600 font-medium mt-1">{formatPrice(item.price)}</p>
+        {/* {isMaxQuantity && (
+          <p className="text-xs text-orange-600 mt-1">Số lượng tối đa: 2</p>
+        )} */}
       </div>
       
       {/* Điều chỉnh số lượng */}
@@ -26,6 +32,8 @@ const CartItem = ({ item, updateQuantity, removeFromCart, formatPrice }) => {
             onClick={() => updateQuantity(item.id, item.quantity - 1)}
             className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700"
             aria-label="Giảm số lượng"
+            //them khi chinh
+            // disabled={item.quantity <= 1}
           >
             <FaMinus size={12} />
           </button>
@@ -33,7 +41,11 @@ const CartItem = ({ item, updateQuantity, removeFromCart, formatPrice }) => {
           <button
             onClick={() => updateQuantity(item.id, item.quantity + 1)}
             className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700"
+            // className={`px-2 py-1 ${isMaxQuantity 
+            //   ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+            //   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}
             aria-label="Tăng số lượng"
+            // disabled={isMaxQuantity}
           >
             <FaPlus size={12} />
           </button>

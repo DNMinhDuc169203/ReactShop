@@ -4,7 +4,7 @@ const Prominent = () => {
   return (
     <div>
         <div className=''>
-            <p className='text-2xl text-center p-5'>Top 3 sản phẩm</p>
+            <p className='text-2xl text-center p-5'>dịch vụ</p>
         </div>
         <div className="flex gap-20 items-center justify-center">
         <div class="max-w-sm rounded overflow-hidden shadow-lg">

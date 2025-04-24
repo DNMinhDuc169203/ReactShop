@@ -388,10 +388,10 @@ const Orders = () => {
                             {formatPrice(item.price)}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                            {item.number_of_products}
+                            {item.number_of_products || item.quantity || 1}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 text-right">
-                            {formatPrice(item.price * item.number_of_products)}
+                            {formatPrice(item.price * (item.number_of_products || item.quantity || 1))}
                           </td>
                         </tr>
                       ))}

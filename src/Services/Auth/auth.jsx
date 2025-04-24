@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8088/api/v1';
+import { API_BASE_URL } from '../../config/api';
 
 const authService = {
   // Đăng ký người dùng

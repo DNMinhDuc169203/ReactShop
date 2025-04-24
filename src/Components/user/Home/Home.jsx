@@ -21,7 +21,7 @@ const Home = () => {
 <Product/>
    </div>
 <div>
-  <Prominent/>
+  {/* <Prominent/> */}
 </div>
 
       <div className="pt-5">

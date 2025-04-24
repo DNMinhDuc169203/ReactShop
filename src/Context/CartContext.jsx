@@ -172,9 +172,31 @@ export const CartProvider = ({ children }) => {
           quantity: updatedItems[existingItemIndex].quantity + quantity
         };
       } else {
+        // Giới hạn số lượng tối đa mỗi sản phẩm là 2
+      //   const newQuantity = updatedItems[existingItemIndex].quantity + quantity;
+      //   if (newQuantity > 2) {
+      //     toast.error('Bạn chỉ có thể mua tối đa 2 sản phẩm cho mỗi loại hàng!');
+      //     updatedItems[existingItemIndex] = {
+      //       ...updatedItems[existingItemIndex],
+      //       quantity: 2
+      //     };
+      //   } else {
+      //     updatedItems[existingItemIndex] = {
+      //       ...updatedItems[existingItemIndex],
+      //       quantity: newQuantity
+      //     };
+      //   }
+      // } else {
+      //   // Giới hạn số lượng ban đầu không vượt quá 2
+      //   const limitedQuantity = quantity > 2 ? 2 : quantity;
+      //   if (quantity > 2) {
+      //     toast.error('Bạn chỉ có thể mua tối đa 2 sản phẩm cho mỗi loại hàng!');
+      //   }
         updatedItems = [...prevItems, {
           ...product,
           quantity: quantity
+          //chinh khi 2 cái
+          //quantity: limitedQuantity
         }];
       }
 
@@ -223,6 +245,12 @@ export const CartProvider = ({ children }) => {
 
   const updateQuantity = (productId, quantity) => {
     if (quantity < 1) return;
+    
+    // Giới hạn số lượng tối đa mỗi sản phẩm là 2
+    // if (quantity > 2) {
+    //   toast.error('Bạn chỉ có thể mua tối đa 2 sản phẩm cho mỗi loại hàng!');
+    //   quantity = 2;
+    // }
     
     setCartItems(prevItems => {
       const updatedItems = prevItems.map(item =>
