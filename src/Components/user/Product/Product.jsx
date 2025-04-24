@@ -22,7 +22,7 @@ const Product = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:8088/api/v1/categories',{
+        const response = await axios.get('https://springbootuploads.onrender.com/api/v1/categories',{
           params: {
             page: 1,
             limit: 10
@@ -41,7 +41,7 @@ const Product = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8088/api/v1/products', {
+        const response = await axios.get('https://springbootuploads.onrender.com/api/v1/products', {
           params: {
             page: currentPage,
             limit: itemsPerPage,
@@ -55,7 +55,7 @@ const Product = () => {
           ...product,
           id: product.id,
           thumbnail: product.thumbnail 
-            ? `http://localhost:8088/api/v1/products/images/${product.thumbnail}` 
+            ? `https://springbootuploads.onrender.com/api/v1/products/images/${product.thumbnail}` 
             : 'https://via.placeholder.com/400x300?text=Không+có+ảnh'
         }));
         
