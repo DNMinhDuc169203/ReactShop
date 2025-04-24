@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8088/api/v1';
+const API_BASE_URL = 'https://springbootuploads.onrender.com/api/v1';
 
 const productService = {
   // Lấy danh sách sản phẩm
